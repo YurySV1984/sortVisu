@@ -25,11 +25,11 @@ namespace sort
                     case true:
                         for (int j = start; j < end; j++)
                         {
-                            OnSwop?.Invoke(this, j);
+                            
                             if (collection[j].CompareTo(collection[j + 1]) > 0)
                             {
-                                Thread.Sleep(SwopDelay);
                                 Swop(j, j + 1);
+                                OnSwop?.Invoke(this, j);
                             }
                         }
                         direction = false;
@@ -39,11 +39,11 @@ namespace sort
                     case false:
                         for (int j = end; j > start; j--)
                         {
-                            OnSwop?.Invoke(this, j);
+                            
                             if (collection[j].CompareTo(collection[j - 1]) < 0)
                             {
-                                Thread.Sleep(SwopDelay);
                                 Swop(j, j - 1);
+                                OnSwop?.Invoke(this, j);
                             }
                         }
                         direction = true;

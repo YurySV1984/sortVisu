@@ -22,7 +22,6 @@ namespace sort
                     
                     if (collection[i].CompareTo(collection[i + 1]) > 0)
                     {
-                        Thread.Sleep(SwopDelay);
                         Swop(i, i + 1);      
                     }
                     OnSwop?.Invoke(this, i);

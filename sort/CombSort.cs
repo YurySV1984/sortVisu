@@ -28,7 +28,6 @@ namespace sort
 
                     if (collection[j].CompareTo(collection[j + delta]) > 0)
                     {
-                        Thread.Sleep(SwopDelay);
                         Swop(j, j + delta);
                         sorted = false;
                     }

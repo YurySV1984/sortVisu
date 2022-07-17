@@ -18,9 +18,10 @@ namespace WpfSort
         InsertSort<int> insertSort;
         InsertSort<int> shellSort;
         SelectSort<int> selectSort;
+        QuickSort<int> quickSort;
 
         //const int Length = 2000;
-        const int delay = 0;
+        const int delay = 400;
         const int swopDelay = 0;
 
         private int _length = 2000;
@@ -145,6 +146,24 @@ namespace WpfSort
             set { Set(ref _selectVisibility, value); }
         }
 
+        private ObservableCollection<int> _colQuick;
+        public ObservableCollection<int> ColQuick
+        {
+            get { return _colQuick; }
+            set { Set(ref _colQuick, value); }
+        }
+        private int _selectedQuick;
+        public int SelectedQuick
+        {
+            get { return _selectedQuick; }
+            set { Set(ref _selectedQuick, value); }
+        }
+        private string _quickVisibility = string.Empty;
+        public string QuickVisibility
+        {
+            get { return _quickVisibility; }
+            set { Set(ref _quickVisibility, value); }
+        }
 
         public WfpSortViewModel()
         {
@@ -169,10 +188,12 @@ namespace WpfSort
             shellSort.SwopDelay = swopDelay;
             selectSort = new SelectSort<int>(Length);
             selectSort.SwopDelay = swopDelay;
+            quickSort = new QuickSort<int>(Length);
+            quickSort.SwopDelay = swopDelay;
             Random random = new();
             for (int i = 0; i < Length; i++)
             {
-                selectSort.collection[i] = shellSort.collection[i] = insertSort.collection[i] = combSort.collection[i] = shakerSort.collection[i] = bubbleSort.collection[i] = random.Next(-2500, 5001);
+                quickSort.collection[i] = selectSort.collection[i] = shellSort.collection[i] = insertSort.collection[i] = combSort.collection[i] = shakerSort.collection[i] = bubbleSort.collection[i] = random.Next(-2500, 5001);
             }
             ColBubble = new ObservableCollection<int>(bubbleSort.collection);
             BubbleVisibility = string.Empty;
@@ -186,6 +207,8 @@ namespace WpfSort
             ShellVisibility = string.Empty;
             ColSelect = new ObservableCollection<int>(selectSort.collection);
             SelectVisibility = string.Empty;
+            ColQuick = new ObservableCollection<int>(quickSort.collection);
+            QuickVisibility = string.Empty;
         }
         #endregion
 
@@ -194,7 +217,7 @@ namespace WpfSort
         private bool CanSort(object p) => true;
         private void OnSortExecuted(object p)
         {
-            if (bubbleSort == null || shakerSort == null || combSort == null || insertSort == null || selectSort == null)
+            if (bubbleSort == null || shakerSort == null || combSort == null || insertSort == null || selectSort == null || quickSort == null)
             {
                 return;
             }
@@ -210,12 +233,15 @@ namespace WpfSort
             shellSort.OnFinish += ShellSort_OnFinish;
             selectSort.OnSwop += new EventHandler<int>(SaveColToWinSelect);
             selectSort.OnFinish += SelectSort_OnFinish;
+            quickSort.OnSwop += new EventHandler<int>(SaveColToWinQuick);
+            quickSort.OnFinish += QuickSort_OnFinish;
             Task.Run(() => bubbleSort.Sort());
             Task.Run(() => shakerSort.Sort());
             Task.Run(() => combSort.Sort());
             Task.Run(() => insertSort.Sort());
             Task.Run(() => shellSort.ShellSort());
             Task.Run(() => selectSort.Sort());
+            Task.Run(() => quickSort.Sort());
         }
         #endregion
 
@@ -289,6 +315,18 @@ namespace WpfSort
         {
             SelectVisibility = "SORTED";
             ColSelect = new ObservableCollection<int>(selectSort.collection);
+        }
+
+        private void SaveColToWinQuick(object? sender, int i)
+        {
+            SelectedQuick = i;
+            Thread.Sleep(delay);
+            ColQuick = new ObservableCollection<int>(quickSort.collection);
+        }
+        private void QuickSort_OnFinish(object? sender, EventArgs e)
+        {
+            QuickVisibility = "SORTED";
+            ColQuick = new ObservableCollection<int>(quickSort.collection);
         }
     }
 }

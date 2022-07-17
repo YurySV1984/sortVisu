@@ -23,7 +23,6 @@ namespace sort
                     OnSwop?.Invoke(this, j);
                     Swop(j, j - 1);
                     j--;
-                    Thread.Sleep(SwopDelay);
                 }
             }
         OnFinish?.Invoke(this, EventArgs.Empty);
@@ -42,7 +41,6 @@ namespace sort
                         Swop(j, j - delta);
                         OnSwop?.Invoke(this, j);
                         j -= delta;
-                        Thread.Sleep(SwopDelay);
                     }
                 }
                 delta /= 2;

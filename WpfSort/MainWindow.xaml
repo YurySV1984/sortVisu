@@ -129,7 +129,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <DataGrid Grid.Column="6" Grid.Row="1" ItemsSource="{Binding ColFast}" AutoGenerateColumns="True" SelectedIndex="{Binding SelectedFast}">
+        <DataGrid Grid.Column="6" Grid.Row="1" ItemsSource="{Binding ColQuick}" AutoGenerateColumns="True" SelectedIndex="{Binding SelectedQuick}">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="50">
                     <DataGridTemplateColumn.CellTemplate>
@@ -160,7 +160,7 @@
             <Label Content="{Binding SelectVisibility}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
         </DockPanel>
         <DockPanel Grid.Column="6" Grid.Row="2">
-            <Label Content="{Binding FastVisibility}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
+            <Label Content="{Binding QuickVisibility}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
         </DockPanel>
     </Grid>
 </Window>
