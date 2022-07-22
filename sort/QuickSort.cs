@@ -25,42 +25,25 @@ namespace sort
 
         private void QSort(T[] collection, int left, int right)
         {
-            if (left >= right) return;
-            
-            var middle = collection[right];
-            var lessIndex = left;
+            if (left >= right)
+            {
+                return;
+            }
+            var bearing = collection[right];
+            var indexToChange = left;
             for (int i = left; i < right; i++)
             {
-                if (collection[i].CompareTo(middle) <= 0)
+                if (collection[i].CompareTo(bearing) <= 0)
                 {
+                    Swop(i, indexToChange);
                     OnSwop?.Invoke(this, i);
-                    Swop(i, lessIndex);
-                    lessIndex++;
+                    indexToChange++;
                 }
             }
-            Swop(lessIndex, right);
-            var root = lessIndex;
-
-            //int root = Part(collection, left, right);            
-            QSort(collection, left, root - 1);
-            QSort(collection, root + 1, right);
-        }
-
-        private int Part(T[] collection, int left, int right)
-        {
-            var middle = collection[right];
-            var lessIndex = left;
-            for (int i = left; i < right; i++)
-            {
-                if (collection[i].CompareTo(middle) <= 0)
-                {
-                    OnSwop?.Invoke(this, i);
-                    Swop(i, lessIndex);
-                    lessIndex++;
-                }
-            }
-            Swop(lessIndex, right);
-            return lessIndex;
+            Swop(right, indexToChange);
+            OnSwop?.Invoke(this, right);
+            QSort(collection, left, indexToChange - 1);
+            QSort(collection, indexToChange + 1, right);
         }
     }
 }

@@ -19,6 +19,8 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -45,14 +47,20 @@
             <Label Content="Select" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         </DockPanel>
         <DockPanel Grid.Column="6" Grid.Row="0">
-            <Label Content="Fast" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Label Content="Quick" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         </DockPanel>
         <DockPanel Grid.Column="7" Grid.Row="0">
+            <Label Content="Merge" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        </DockPanel>
+        <DockPanel Grid.Column="8" Grid.Row="0">
+            <Label Content="Tree" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        </DockPanel>
+
+
+        <DockPanel Grid.Column="9" Grid.Row="0">
             <TextBox Text="{Binding Length}"/>
         </DockPanel>
-        
-        
-        <StackPanel Grid.Column="7" Grid.Row="1">
+        <StackPanel Grid.Column="9" Grid.Row="1">
             <Button Content="Gen" Command="{Binding GenCommand}"/>
             <Button Content="Sort" Command="{Binding SortCommand}"/>
         </StackPanel>
@@ -141,6 +149,30 @@
             </DataGrid.Columns>
         </DataGrid>
 
+        <DataGrid Grid.Column="7" Grid.Row="1" ItemsSource="{Binding ColMerge}" AutoGenerateColumns="True" SelectedIndex="{Binding SelectedMerge}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="50">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" FontSize="15" Width="40" HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <DataGrid Grid.Column="8" Grid.Row="1" ItemsSource="{Binding ColTree}" AutoGenerateColumns="True" SelectedIndex="{Binding SelectedTree}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="50">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" FontSize="15" Width="40" HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
         <DockPanel Grid.Column="0" Grid.Row="2">
             <Label Content="{Binding BubbleVisibility}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
         </DockPanel>
@@ -161,6 +193,12 @@
         </DockPanel>
         <DockPanel Grid.Column="6" Grid.Row="2">
             <Label Content="{Binding QuickVisibility}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
+        </DockPanel>
+        <DockPanel Grid.Column="7" Grid.Row="2">
+            <Label Content="{Binding MergeVisibility}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
+        </DockPanel>
+        <DockPanel Grid.Column="8" Grid.Row="2">
+            <Label Content="{Binding TreeVisibility}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="20"/>
         </DockPanel>
     </Grid>
 </Window>

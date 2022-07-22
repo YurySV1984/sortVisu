@@ -15,16 +15,16 @@ namespace sort
 
         public override void Sort()
         {
-            for (int j = 0; j < collection.Length; j++)
+            for (int i = 0; i < collection.Length; i++)
             {
-                for (int i = 0; i < collection.Length - j - 1; i++)
+                for (int j = 0; j < collection.Length - i - 1; j++)
                 {
                     
-                    if (collection[i].CompareTo(collection[i + 1]) > 0)
+                    if (collection[j].CompareTo(collection[j + 1]) > 0)
                     {
-                        Swop(i, i + 1);      
+                        Swop(j, j + 1);      
                     }
-                    OnSwop?.Invoke(this, i);
+                    OnSwop?.Invoke(this, j);
                 }
             }
             OnFinish?.Invoke(this, EventArgs.Empty);

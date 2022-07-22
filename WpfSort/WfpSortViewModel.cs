@@ -19,9 +19,10 @@ namespace WpfSort
         InsertSort<int> shellSort;
         SelectSort<int> selectSort;
         QuickSort<int> quickSort;
+        MergeSort<int> mergeSort;
+        TreeSort<int> treeSort;
 
-        //const int Length = 2000;
-        const int delay = 400;
+        const int delay = 0;
         const int swopDelay = 0;
 
         private int _length = 2000;
@@ -165,6 +166,44 @@ namespace WpfSort
             set { Set(ref _quickVisibility, value); }
         }
 
+        private ObservableCollection<int> _colMerge;
+        public ObservableCollection<int> ColMerge
+        {
+            get { return _colMerge; }
+            set { Set(ref _colMerge, value); }
+        }
+        private int _selectedMerge;
+        public int SelectedMerge
+        {
+            get { return _selectedMerge; }
+            set { Set(ref _selectedMerge, value); }
+        }
+        private string _mergeVisibility = string.Empty;
+        public string MergeVisibility
+        {
+            get { return _mergeVisibility; }
+            set { Set(ref _mergeVisibility, value); }
+        }
+
+        private ObservableCollection<int> _colTree;
+        public ObservableCollection<int> ColTree
+        {
+            get { return _colTree; }
+            set { Set(ref _colTree, value); }
+        }
+        private int _selectedTree;
+        public int SelectedTree
+        {
+            get { return _selectedTree; }
+            set { Set(ref _selectedTree, value); }
+        }
+        private string _treeVisibility = string.Empty;
+        public string TreeVisibility
+        {
+            get { return _treeVisibility; }
+            set { Set(ref _treeVisibility, value); }
+        }
+
         public WfpSortViewModel()
         {
             GenCommand = new LambdaCommand(OnGenExecuted, CanGen);
@@ -176,24 +215,19 @@ namespace WpfSort
         private bool CanGen(object p) => true;
         private void OnGenExecuted(object p)
         {
-            bubbleSort = new BubbleSort<int>(Length);
-            bubbleSort.SwopDelay = swopDelay;
-            shakerSort = new ShakerSort<int>(Length);
-            shakerSort.SwopDelay = swopDelay;
-            combSort = new CombSort<int>(Length);
-            combSort.SwopDelay = swopDelay;
-            insertSort = new InsertSort<int>(Length);
-            insertSort.SwopDelay = swopDelay;
-            shellSort = new InsertSort<int>(Length);
-            shellSort.SwopDelay = swopDelay;
-            selectSort = new SelectSort<int>(Length);
-            selectSort.SwopDelay = swopDelay;
-            quickSort = new QuickSort<int>(Length);
-            quickSort.SwopDelay = swopDelay;
+            bubbleSort = new(Length) { SwopDelay = swopDelay };
+            shakerSort = new(Length) { SwopDelay = swopDelay };
+            combSort = new(Length) { SwopDelay = swopDelay };
+            insertSort = new(Length) { SwopDelay = swopDelay };
+            shellSort = new(Length) { SwopDelay = swopDelay };
+            selectSort = new(Length) { SwopDelay = swopDelay };
+            quickSort = new(Length) { SwopDelay = swopDelay };
+            mergeSort = new(Length) { SwopDelay = swopDelay };
+            treeSort = new(Length) { SwopDelay = swopDelay };
             Random random = new();
             for (int i = 0; i < Length; i++)
             {
-                quickSort.collection[i] = selectSort.collection[i] = shellSort.collection[i] = insertSort.collection[i] = combSort.collection[i] = shakerSort.collection[i] = bubbleSort.collection[i] = random.Next(-2500, 5001);
+                treeSort.collection[i] = mergeSort.collection[i] = quickSort.collection[i] = selectSort.collection[i] = shellSort.collection[i] = insertSort.collection[i] = combSort.collection[i] = shakerSort.collection[i] = bubbleSort.collection[i] = random.Next(-2500, 5001);
             }
             ColBubble = new ObservableCollection<int>(bubbleSort.collection);
             BubbleVisibility = string.Empty;
@@ -209,6 +243,10 @@ namespace WpfSort
             SelectVisibility = string.Empty;
             ColQuick = new ObservableCollection<int>(quickSort.collection);
             QuickVisibility = string.Empty;
+            ColMerge = new ObservableCollection<int>(mergeSort.collection);
+            MergeVisibility = string.Empty;
+            ColTree = new ObservableCollection<int>(treeSort.collection);
+            TreeVisibility = string.Empty;
         }
         #endregion
 
@@ -217,7 +255,7 @@ namespace WpfSort
         private bool CanSort(object p) => true;
         private void OnSortExecuted(object p)
         {
-            if (bubbleSort == null || shakerSort == null || combSort == null || insertSort == null || selectSort == null || quickSort == null)
+            if (bubbleSort == null || shakerSort == null || combSort == null || insertSort == null || selectSort == null || quickSort == null || mergeSort == null || treeSort == null)
             {
                 return;
             }
@@ -235,6 +273,10 @@ namespace WpfSort
             selectSort.OnFinish += SelectSort_OnFinish;
             quickSort.OnSwop += new EventHandler<int>(SaveColToWinQuick);
             quickSort.OnFinish += QuickSort_OnFinish;
+            mergeSort.OnSwop += new EventHandler<int>(SaveColToWinMerge);
+            mergeSort.OnFinish += MergeSort_OnFinish;
+            treeSort.OnSwop += new EventHandler<int>(SaveColToWinTree);
+            treeSort.OnFinish += TreeSort_OnFinish;
             Task.Run(() => bubbleSort.Sort());
             Task.Run(() => shakerSort.Sort());
             Task.Run(() => combSort.Sort());
@@ -242,6 +284,8 @@ namespace WpfSort
             Task.Run(() => shellSort.ShellSort());
             Task.Run(() => selectSort.Sort());
             Task.Run(() => quickSort.Sort());
+            Task.Run(() => mergeSort.Sort());
+            Task.Run(() => treeSort.Sort());
         }
         #endregion
 
@@ -327,6 +371,30 @@ namespace WpfSort
         {
             QuickVisibility = "SORTED";
             ColQuick = new ObservableCollection<int>(quickSort.collection);
+        }
+
+        private void SaveColToWinMerge(object? sender, int i)
+        {
+            SelectedMerge = i;
+            Thread.Sleep(delay);
+            ColMerge = new ObservableCollection<int>(mergeSort.collection);
+        }
+        private void MergeSort_OnFinish(object? sender, EventArgs e)
+        {
+            MergeVisibility = "SORTED";
+            ColMerge = new ObservableCollection<int>(mergeSort.collection);
+        }
+
+        private void SaveColToWinTree(object? sender, int i)
+        {
+            SelectedTree = i;
+            Thread.Sleep(delay);
+            ColTree = new ObservableCollection<int>(treeSort.collection);
+        }
+        private void TreeSort_OnFinish(object? sender, EventArgs e)
+        {
+            TreeVisibility = "SORTED";
+            ColTree = new ObservableCollection<int>(treeSort.collection);
         }
     }
 }
